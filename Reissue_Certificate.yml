@@ -1,4 +1,7 @@
 ---
+- name: Reissue certificate
+  hosts:all 
+
 - name: Create certificate private key on the server.
   openssl_privatekey:
     path: /home/wesedamin/certs/prvKey.pem
