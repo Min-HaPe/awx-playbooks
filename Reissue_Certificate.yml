@@ -1,87 +1,90 @@
 ---
+- name: Reissue Certificate
   hosts: all
   become: yes
   gather_facts: yes
+
+  Tasks:
  
-- name: Create certificate private key on the server.
-  openssl_privatekey:
-    path: /home/wesedamin/certs/prvKey.pem
-#    passphrase: '{{ privatekey_passphrase | default(omit) }}'
-#    cipher: '{{ privatekey_cipher | default(omit) }}'
-    type: RSA
-    size: 2048
-    remote_src: yes
+  - name: Create certificate private key on the server.
+    openssl_privatekey:
+      path: /home/wesedamin/certs/prvKey.pem
+  #    passphrase: '{{ privatekey_passphrase | default(omit) }}'
+  #    cipher: '{{ privatekey_cipher | default(omit) }}'
+      type: RSA
+      size: 2048
+      remote_src: yes
 
-- name: Delete existing CSR
-  ansible.builtin.file:
-    path: /home/weseadmin/certs/csr.pem
-    state: absent
+  - name: Delete existing CSR
+    ansible.builtin.file:
+      path: /home/weseadmin/certs/csr.pem
+      state: absent
 
-- name: Backup existing Certificate
-  copy:
-    src: /home/weseadmin/cert.pem
-    dest: /home/weseadmin/cert.pem.{{ ansible_date_time.iso8601 }}
-    remote_src: yes
+  - name: Backup existing Certificate
+    copy:
+      src: /home/weseadmin/cert.pem
+      dest: /home/weseadmin/cert.pem.{{ ansible_date_time.iso8601 }}
+      remote_src: yes
 
-- name: Copy the existing Cert to temporary file on localhost
+  - name: Copy the existing Cert to temporary file on localhost
 
-  fetch:
-    src: /etc/apache2/ssl/ca.crt
-    dest: /home/weseadmin/tmp/cert.pem
-    flat: true
-    fail_on_missing: false
+    fetch:
+      src: /etc/apache2/ssl/ca.crt
+      dest: /home/weseadmin/tmp/cert.pem
+      flat: true
+      fail_on_missing: false
 
-- name: Create certificate signing request on the server
-  openssl_csr:
-    path: /home/weseadmin/certs/csr.pem
-    privatekey_path: /home/weseadmin/prvKey.pem
-#    privatekey_passphrase: '{{ privatekey_passphrase | default(omit) }}'
-    digest: sha256
-    common_name: ansibletest.wesentra.com
-    organization_name: Wesentra Oy
-    organizational_unit_name: Verification
-    country_name: FI
-    state_or_province_name: Keski-Suomi
+  - name: Create certificate signing request on the server
+    openssl_csr:
+      path: /home/weseadmin/certs/csr.pem
+      privatekey_path: /home/weseadmin/prvKey.pem
+  #    privatekey_passphrase: '{{ privatekey_passphrase | default(omit) }}'
+      digest: sha256
+      common_name: ansibletest.wesentra.com
+      organization_name: Wesentra Oy
+      organizational_unit_name: Verification
+      country_name: FI
+      state_or_province_name: Keski-Suomi
 
-- name: Copy the CSR to temporary file on localhost
-  fetch:
-    src: /home/weseroot/csr.pem
-    dest: /home/weseroot/tmp/csr.pem
-    flat: true
-    fail_on_missing: false
+  - name: Copy the CSR to temporary file on localhost
+    fetch:
+      src: /home/weseroot/csr.pem
+      dest: /home/weseroot/tmp/csr.pem
+      flat: true
+      fail_on_missing: false
 
-- name: If there is no certificate present in path, request a new certificate
-        of type PRIVATE_SSL. Otherwise, if there is an Entrust managed certificate
-        in path and it is within 365 days of expiration, request a REISSUE of that
-        certificate.
-  ecs_certificate:
-    path: /home/weseroot/tmp/cert.pem
-    csr: /home/weseroot/tmp/csr.pem
-    cert_type: PRIVATE_SSL
-#    cert_expiry: '2020-08-20'
-    request_type: reissue
-    remaining_days: 365
-    requester_name: Harry Ansible
-    requester_email: harry@wesentra.com
-    requester_phone: 555-555-5555
-    entrust_api_user: {{api_user}}
-    entrust_api_key: {{api_pw}}
-    entrust_api_client_cert_path: /home/weseroot/.ansible/roles/thadreez.ecs_test/api_files/apiClientCert.pem
-    entrust_api_client_cert_key_path: /home/weseroot/.ansible/roles/thadreez.ecs_test/api_files/apiClientKey.pem
-  delegate_to: localhost
+  - name: If there is no certificate present in path, request a new certificate
+          of type PRIVATE_SSL. Otherwise, if there is an Entrust managed certificate
+          in path and it is within 365 days of expiration, request a REISSUE of that
+          certificate.
+    ecs_certificate:
+      path: /home/weseroot/tmp/cert.pem
+      csr: /home/weseroot/tmp/csr.pem
+      cert_type: PRIVATE_SSL
+  #    cert_expiry: '2020-08-20'
+      request_type: reissue
+      remaining_days: 365
+      requester_name: Harry Ansible
+      requester_email: harry@wesentra.com
+      requester_phone: 555-555-5555
+      entrust_api_user: {{api_user}}
+      entrust_api_key: {{api_pw}}
+      entrust_api_client_cert_path: /home/weseroot/.ansible/roles/thadreez.ecs_test/api_files/apiClientCert.pem
+      entrust_api_client_cert_key_path: /home/weseroot/.ansible/roles/thadreez.ecs_test/api_files/apiClientKey.pem
+    delegate_to: localhost
 
-- name: Copy private key to Apache folder
-  copy:
-    src: /home/weseroot/prvKey.pem
-    dest: /etc/apache2/ssl/ca.key
-    remote_src: yes
+  - name: Copy private key to Apache folder
+    copy:
+      src: /home/weseroot/prvKey.pem
+      dest: /etc/apache2/ssl/ca.key
+      remote_src: yes
 
-- name: Copy certificate to Apache folder
-  copy:
-    src: /home/weseroot/tmp/cert.pem
-    dest: /etc/apache2/ssl/ca.crt
+  - name: Copy certificate to Apache folder
+    copy:
+      src: /home/weseroot/tmp/cert.pem
+      dest: /etc/apache2/ssl/ca.crt
 
-- name: restart apache
-  service:
-    name: apache2
+  - name: restart apache
+    service:
+      name: apache2
 ...
