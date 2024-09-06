@@ -1,6 +1,8 @@
 ---
-hosts:all 
-
+  hosts: all
+  become: yes
+  gather_facts: yes
+ 
 - name: Create certificate private key on the server.
   openssl_privatekey:
     path: /home/wesedamin/certs/prvKey.pem
