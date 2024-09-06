@@ -1,6 +1,5 @@
 ---
-- name: Reissue certificate
-  hosts:all 
+hosts:all 
 
 - name: Create certificate private key on the server.
   openssl_privatekey:
