@@ -13,7 +13,7 @@
       cipher: auto
       type: RSA
       size: 2048
-      remote_src: yes
+      #remote_src: yes
 
   - name: Delete existing CSR
     ansible.builtin.file:
