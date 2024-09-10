@@ -33,8 +33,8 @@
   - name: Create certificate signing request on the server
     openssl_csr:
       path: /home/azureuser/csr.pem
-      privatekey_path: /etc/ssl/private/ansible-demo.key
-      privatekey_passphrase: 'ansible'
+      privatekey_path: /home/azureuser/ansibledemo-keys/ansible-demo.key
+ #    privatekey_passphrase: 'ansible'
       digest: sha256
       common_name: ansible-demo.wesentra.com
       organization_name: Wesentra Oy
