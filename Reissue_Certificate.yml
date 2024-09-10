@@ -8,9 +8,7 @@
  
   - name: Create certificate private key on the server.
     openssl_privatekey:
-      path: /etc/ssl/private/ansible-demo.key
-      passphrase: 'ansible'
-      cipher: auto
+      path: /home/azureuser/ansibledemo-keys/ansible-demo.key
       type: RSA
       size: 2048
       
