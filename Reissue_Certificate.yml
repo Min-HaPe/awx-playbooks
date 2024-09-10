@@ -8,16 +8,16 @@
  
   - name: Create certificate private key on the server.
     openssl_privatekey:
-      path: /home/wesedamin/certs/prvKey.pem
-  #    passphrase: '{{ privatekey_passphrase | default(omit) }}'
-  #    cipher: '{{ privatekey_cipher | default(omit) }}'
+      path: /home/azureuser/ansibledemo-keys/prvKey.pem
+      passphrase: 'ansible'
+      cipher: auto
       type: RSA
       size: 2048
       remote_src: yes
 
   - name: Delete existing CSR
     ansible.builtin.file:
-      path: /home/weseadmin/certs/csr.pem
+      path: /home/azureuser/certs/csr.pem
       state: absent
 
   - name: Backup existing Certificate
@@ -30,15 +30,15 @@
 
     fetch:
       src: /etc/apache2/ssl/ca.crt
-      dest: /home/weseadmin/tmp/cert.pem
+      dest: /home/azureuser/tmp/cert.pem
       flat: true
       fail_on_missing: false
 
   - name: Create certificate signing request on the server
     openssl_csr:
-      path: /home/weseadmin/certs/csr.pem
+      path: /home/azureuser/certs/csr.pem
       privatekey_path: /home/weseadmin/prvKey.pem
-  #    privatekey_passphrase: '{{ privatekey_passphrase | default(omit) }}'
+      privatekey_passphrase: 'ansible'
       digest: sha256
       common_name: ansibletest.wesentra.com
       organization_name: Wesentra Oy
@@ -48,8 +48,8 @@
 
   - name: Copy the CSR to temporary file on localhost
     fetch:
-      src: /home/weseroot/csr.pem
-      dest: /home/weseroot/tmp/csr.pem
+      src: /home/azureuser/csr.pem
+      dest: /home/azureuser/tmp/csr.pem
       flat: true
       fail_on_missing: false
 
@@ -58,8 +58,8 @@
           in path and it is within 365 days of expiration, request a REISSUE of that
           certificate.
     ecs_certificate:
-      path: /home/weseroot/tmp/cert.pem
-      csr: /home/weseroot/tmp/csr.pem
+      path: /home/azureuser/tmp/cert.pem
+      csr: /home/azureuser/tmp/csr.pem
       cert_type: PRIVATE_SSL
   #    cert_expiry: '2020-08-20'
       request_type: reissue
@@ -67,8 +67,8 @@
       requester_name: Harry Ansible
       requester_email: harry@wesentra.com
       requester_phone: 555-555-5555
-      entrust_api_user: {ANSIBLE_NET_USER}
-      entrust_api_key: {ANSIBLE_NET_PASSWORD}
+      entrust_api_user: '{{ANSIBLE_NET_USER}}'
+      entrust_api_key: '{{ANSIBLE_NET_PASSWORD}}'
       entrust_api_client_cert_path: /home/weseroot/.ansible/roles/thadreez.ecs_test/api_files/apiClientCert.pem
       entrust_api_client_cert_key_path: /home/weseroot/.ansible/roles/thadreez.ecs_test/api_files/apiClientKey.pem
     delegate_to: localhost
