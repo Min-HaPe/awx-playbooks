@@ -5,10 +5,9 @@
   gather_facts: yes
 
   vars:
-    vars:
-      network:
-        api_username: '{{ lookup("env", "ANSIBLE_NET_USERNAME") }}'
-        api_password: '{{ lookup("env", "ANSIBLE_NET_PASSWORD") }}'
+    network:
+      api_username: '{{ lookup("env", "ANSIBLE_NET_USERNAME") }}'
+      api_password: '{{ lookup("env", "ANSIBLE_NET_PASSWORD") }}'
 
 
   tasks:
