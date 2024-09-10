@@ -34,7 +34,7 @@
     openssl_csr:
       path: /home/azureuser/csr.pem
       privatekey_path: /home/azureuser/ansibledemo-keys/ansible-demo.key
- #    privatekey_passphrase: 'ansible'
+ #     privatekey_passphrase: 'ansible'
       digest: sha256
       common_name: ansible-demo.wesentra.com
       organization_name: Wesentra Oy
@@ -42,12 +42,11 @@
       country_name: FI
       state_or_province_name: Keski-Suomi
 
-  - name: Copy the CSR to temporary file on localhost
-    fetch:
-      src: /home/azureuser/csr.pem
-      dest: /home/azureuser/tmp/csr.pem
-      flat: true
-      fail_on_missing: false
+ # - name: Copy the CSR to temporary file on localhost
+ #   fetch:
+ #    src: /home/azureuser/csr.pem
+ #    flat: true
+ #    fail_on_missing: false
 
   - name: If there is no certificate present in path, request a new certificate
           of type PRIVATE_SSL. Otherwise, if there is an Entrust managed certificate
