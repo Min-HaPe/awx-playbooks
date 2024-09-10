@@ -8,39 +8,37 @@
  
   - name: Create certificate private key on the server.
     openssl_privatekey:
-      path: /home/azureuser/ansibledemo-keys/prvKey.pem
+      path: /etc/ssl/private/ansible-demo.key
       passphrase: 'ansible'
       cipher: auto
       type: RSA
       size: 2048
-      #remote_src: yes
-
+      
   - name: Delete existing CSR
     ansible.builtin.file:
-      path: /home/azureuser/certs/csr.pem
+      path: /home/azureuser/csr.pem
       state: absent
 
   - name: Backup existing Certificate
     copy:
-      src: /home/weseadmin/cert.pem
-      dest: /home/weseadmin/cert.pem.{{ ansible_date_time.iso8601 }}
+      src: /etc/ssl/certs/ansible-demo.crt
+      dest: /home/azureuser/tmp/cert.pem.{{ ansible_date_time.iso8601 }}
       remote_src: yes
 
   - name: Copy the existing Cert to temporary file on localhost
-
     fetch:
-      src: /etc/apache2/ssl/ca.crt
+      src: /etc/ssl/certs/ansible-demo.crt
       dest: /home/azureuser/tmp/cert.pem
       flat: true
       fail_on_missing: false
 
   - name: Create certificate signing request on the server
     openssl_csr:
-      path: /home/azureuser/certs/csr.pem
-      privatekey_path: /home/weseadmin/prvKey.pem
+      path: /home/azureuser/csr.pem
+      privatekey_path: /etc/ssl/private/ansible-demo.key
       privatekey_passphrase: 'ansible'
       digest: sha256
-      common_name: ansibletest.wesentra.com
+      common_name: ansible-demo.wesentra.com
       organization_name: Wesentra Oy
       organizational_unit_name: Verification
       country_name: FI
@@ -73,7 +71,7 @@
       entrust_api_client_cert_key_path: /home/weseroot/.ansible/roles/thadreez.ecs_test/api_files/apiClientKey.pem
     delegate_to: localhost
 
-  - name: Copy private key to Apache folder
+  - name: Copy private key to Private key folder
     copy:
       src: /home/weseroot/prvKey.pem
       dest: /etc/apache2/ssl/ca.key
@@ -84,7 +82,8 @@
       src: /home/weseroot/tmp/cert.pem
       dest: /etc/apache2/ssl/ca.crt
 
-  - name: restart apache
+  - name: restart Ngninx
     service:
-      name: apache2
+      name: Ngninx
+      state: restarted
 ...
