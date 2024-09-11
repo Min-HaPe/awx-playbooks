@@ -14,13 +14,13 @@
  
   - name: Create certificate private key on the server.
     openssl_privatekey:
-      path: /home/azureuser/ansibledemo-keys/ansible-demo.key
+      path: /home/azureuser/tmp/ansible-demo.key
       type: RSA
       size: 2048
       
   - name: Delete existing CSR
     ansible.builtin.file:
-      path: /home/azureuser/csr.pem
+      path: /home/azureuser/tmp/csr.pem
       state: absent
 
   - name: Backup existing Certificate
@@ -38,8 +38,8 @@
 
   - name: Create certificate signing request on the server
     openssl_csr:
-      path: /home/azureuser/csr.pem
-      privatekey_path: /home/azureuser/ansibledemo-keys/ansible-demo.key
+      path: /home/azureuser/tmp/csr.pem
+      privatekey_path: /home/azureuser/tmp/ansible-demo.key
  #     privatekey_passphrase: 'ansible'
       digest: sha256
       common_name: ansible-demo.wesentra.com
@@ -60,7 +60,7 @@
           certificate.
     ecs_certificate:
       path: /etc/ssl/certs/ansible-demo.crt
-      csr: /home/azureuser/csr.pem
+      csr: /home/azureuser/tmp/csr.pem
       cert_type: PRIVATE_SSL
   #    cert_expiry: '2020-08-20'
       request_type: reissue
@@ -76,14 +76,14 @@
 
   - name: Copy private key to Private key folder
     copy:
-      src: /home/azureuser/ansibledemo-keys/ansible-demo.key
+      src: /home/azureuser/tmp/ansible-demo.key
       dest: /etc/ssl/private/ansible-demo.key
       remote_src: yes
 
-  - name: Copy certificate to Apache folder
-    copy:
-      src: /home/weseroot/tmp/cert.pem
-      dest: /etc/apache2/ssl/ca.crt
+ # - name: Copy certificate to Apache folder
+ #   copy:
+ #    src: /home/weseroot/tmp/cert.pem
+ #    dest: /etc/apache2/ssl/ca.crt
 
   - name: restart Ngninx
     service:
