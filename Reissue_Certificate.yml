@@ -2,6 +2,7 @@
 - name: Reissue Certificate
   hosts: all
   become: true
+  become_user: azureuser
   gather_facts: yes
   become_method: sudo
 
