@@ -2,6 +2,7 @@
 - name: Reissue Certificate
   hosts: all
   gather_facts: yes
+  become: true
  
 
   vars:
