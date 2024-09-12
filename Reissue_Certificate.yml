@@ -11,9 +11,8 @@
       api_password: '{{ lookup("env", "ANSIBLE_NET_PASSWORD") }}'
 
   
-      ansible_connection: winrm
-      ansible_winrm_cert_key_pem: '{{ lookup("env", "API_CLIENT_CERTIFICATE") }}'
-      ansible_winrm_cert_pem: '{{ lookup("env", "API_PRIVATE_KEY") }}'
+      api_certificate: '{{ lookup("env", "API_CLIENT_CERTIFICATE") }}'
+      api_private_key: '{{ lookup("env", "API_PRIVATE_KEY") }}'
 
   tasks:
  
