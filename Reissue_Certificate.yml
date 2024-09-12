@@ -12,8 +12,8 @@
 
   
       ansible_connection: winrm
-      ansible_winrm_cert_key_pem: '{{ "env", "MY_WINRM_KEY" }}'
-      ansible_winrm_cert_pem: '{{ "env", "MY_WINRM_CERT" }}'
+      ansible_winrm_cert_key_pem: '{{ lookup("env", "MY_WINRM_KEY") }}'
+      ansible_winrm_cert_pem: '{{ lookup("env", "MY_WINRM_CERT") }}'
 
   tasks:
  
@@ -75,8 +75,8 @@
       requester_phone: 555-555-5555
       entrust_api_user: '{{ api_user }}'
       entrust_api_key: '{{ api_pass }}'
-      entrust_api_client_cert_path: '{{ tower.filename.cert_file }}'
-      entrust_api_client_cert_key_path: '{{ tower.filename.key_file }}'
+      entrust_api_client_cert_path: '{{ API_PRIVATE_KEY }}'
+      entrust_api_client_cert_key_path: '{{ API_CLIENT_CERTIFICATE }}'
     delegate_to: localhost
     
 
