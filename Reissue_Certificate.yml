@@ -12,8 +12,8 @@
 
   
       ansible_connection: winrm
-      ansible_winrm_cert_key_pem: '{{ lookup("env", "MY_WINRM_KEY") }}'
-      ansible_winrm_cert_pem: '{{ lookup("env", "MY_WINRM_CERT") }}'
+      ansible_winrm_cert_key_pem: '{{ lookup("env", "API_CLIENT_CERTIFICATE") }}'
+      ansible_winrm_cert_pem: '{{ lookup("env", "API_PRIVATE_KEY") }}'
 
   tasks:
  
