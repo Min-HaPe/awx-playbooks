@@ -3,7 +3,7 @@
   hosts: all
   become: true
   gather_facts: yes
-  become_exe: 'sudo -p "Password: " su -'
+  become_method: sudo
 
   vars:
     network:
