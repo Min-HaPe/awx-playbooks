@@ -64,7 +64,7 @@
           certificate.
     become: false
       
-    ecs_certificate:
+    community.crypto.ecs_certificate:
       path: /home/azureuser/tmp/csr.pem
       csr: /home/azureuser/tmp/csr.pem
       cert_type: PRIVATE_SSL
@@ -76,7 +76,7 @@
       requester_phone: 555-555-5555
       entrust_api_user: '{{ api_user }}'
       entrust_api_key: '{{ api_pass }}'
-      entrust_api_client_cert_path: /home/azureuser/ecsapi.pem
+      entrust_api_client_cert_path: /home/azureuser/ecsapi.crt
       entrust_api_client_cert_key_path: /home/azureuser/api_key.key
     delegate_to: localhost
     
