@@ -42,7 +42,7 @@
   - name: Create certificate signing request on the server
     openssl_csr:
       path: /home/azureuser/tmp/csr.pem
-      privatekey_path: /home/azureuser/tmp/ansible-demo.key
+      privatekey_path: /etc/ssl/private/ansible-demo.key
  #     privatekey_passphrase: 'ansible'
       digest: sha256
       common_name: ansible-demo.wesentra.com
@@ -52,13 +52,11 @@
       state_or_province_name: Keski-Suomi
 
   - name: Copy the CSR to temporary file on localhost
-    become: true
-    become_method: sudo
     fetch:
-     src: /home/azureuser/tmp/csr.pem
-     dest: /home/azureuser/tmp/csr.pem
-     flat: true
-     fail_on_missing: false
+      src: /home/azureuser/tmp/csr.pem
+      dest: /tmp/csr.pem
+      flat: true
+      fail_on_missing: false
 
   - name: If there is no certificate present in path, request a new certificate
           of type PRIVATE_SSL. Otherwise, if there is an Entrust managed certificate
