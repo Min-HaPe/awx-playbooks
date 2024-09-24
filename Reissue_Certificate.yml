@@ -64,7 +64,7 @@
           certificate.
     become: true
     become_method: sudo
-    
+    become_exe: 'sudo su -'
     ecs_certificate:
       path: /home/azureuser/tmp/csr.pem
       csr: /home/azureuser/tmp/csr.pem
