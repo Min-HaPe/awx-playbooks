@@ -1,3 +1,5 @@
 collections:
 - name: community.crypto
   source: https://galaxy.ansible.com
+- name: community.crypto.ecs_certificate
+  source: https://galaxy.ansible.com
