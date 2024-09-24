@@ -77,7 +77,7 @@
       entrust_api_key: '{{ api_pass }}'
       entrust_api_client_cert_path: '{{ API_CLIENT_CERTIFICATE }}'
       entrust_api_client_cert_key_path: '{{ API_PRIVATE_KEY }}'
-    
+    delegate_to: localhost
     
 
   - name: Copy private key to Private key folder
