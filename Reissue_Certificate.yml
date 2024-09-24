@@ -54,6 +54,7 @@
   - name: Copy the CSR to temporary file on localhost
     fetch:
      src: /home/azureuser/tmp/csr.pem
+     dest: /home/azureuser/tmp/csr.pem
      flat: true
      fail_on_missing: false
 
