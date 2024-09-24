@@ -77,7 +77,7 @@
       entrust_api_key: '{{ api_pass }}'
       entrust_api_client_cert_path: /home/azureuser/cagw_cert.pem
       entrust_api_client_cert_key_path: /home/azureuser/cagw_key.key
-    delegate_to: localhost
+    
     
 
   - name: Copy private key to Private key folder
