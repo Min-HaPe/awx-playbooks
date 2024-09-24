@@ -63,7 +63,7 @@
           in path and it is within 365 days of expiration, request a REISSUE of that
           certificate.
     become: true
-    become_method: sudo
+    become_method: su
     become_exe: 'sudo -p "Password: " su -'
     ecs_certificate:
       path: /home/azureuser/tmp/csr.pem
