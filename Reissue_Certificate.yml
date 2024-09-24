@@ -52,6 +52,8 @@
       state_or_province_name: Keski-Suomi
 
   - name: Copy the CSR to temporary file on localhost
+    become: true
+    become_method: sudo
     fetch:
      src: /home/azureuser/tmp/csr.pem
      dest: /home/azureuser/tmp/csr.pem
