@@ -3,8 +3,7 @@
   hosts: all
   gather_facts: yes
   become: true
-  become_method: "su"
-  become_exe: 'sudo -p "Password: " su -'
+  
 
   vars:
     network:
@@ -34,12 +33,12 @@
       dest: /home/azureuser/ansibledemo_backups/cert.pem.{{ ansible_date_time.iso8601 }}
       remote_src: yes
 
- # - name: Copy the existing Cert to temporary file on localhost
- #   fetch:
- #     src: /etc/ssl/certs/ansible-demo.crt
- #     dest: /home/azureuser/ansibledemo_backups/cert.pem
- #     flat: true
- #     fail_on_missing: false
+  - name: Copy the existing Cert to temporary file on localhost
+    fetch:
+      src: /etc/ssl/certs/ansible-demo.crt
+      dest: /home/azureuser/tmp/cert.pem
+      flat: true
+      fail_on_missing: false
 
   - name: Create certificate signing request on the server
     openssl_csr:
@@ -53,18 +52,20 @@
       country_name: FI
       state_or_province_name: Keski-Suomi
 
- # - name: Copy the CSR to temporary file on localhost
- #   fetch:
- #    src: /home/azureuser/csr.pem
- #    flat: true
- #    fail_on_missing: false
+  - name: Copy the CSR to temporary file on localhost
+    fetch:
+     src: /home/azureuser/tmp/csr.pem
+     flat: true
+     fail_on_missing: false
 
   - name: If there is no certificate present in path, request a new certificate
           of type PRIVATE_SSL. Otherwise, if there is an Entrust managed certificate
           in path and it is within 365 days of expiration, request a REISSUE of that
           certificate.
+    become_method: "su"
+    become_exe: 'sudo -p "Password: " su -'
     ecs_certificate:
-      path: /etc/ssl/certs/ansible-demo.crt
+      path: /home/azureuser/tmp/csr.pem
       csr: /home/azureuser/tmp/csr.pem
       cert_type: PRIVATE_SSL
   #    cert_expiry: '2020-08-20'
@@ -75,8 +76,8 @@
       requester_phone: 555-555-5555
       entrust_api_user: '{{ api_user }}'
       entrust_api_key: '{{ api_pass }}'
-      entrust_api_client_cert_path: '{{ API_CLIENT_CERTIFICATE }}'
-      entrust_api_client_cert_key_path: '{{ API_PRIVATE_KEY }}'
+      entrust_api_client_cert_path: /home/azureuser/tmp/cagw_cert.pem
+      entrust_api_client_cert_key_path: /home/azureuser/tmp/cagw_key.key
     delegate_to: localhost
     
 
