@@ -62,6 +62,7 @@
           of type PRIVATE_SSL. Otherwise, if there is an Entrust managed certificate
           in path and it is within 365 days of expiration, request a REISSUE of that
           certificate.
+    become: true
     become_method: sudo
     
     ecs_certificate:
