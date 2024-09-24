@@ -62,7 +62,7 @@
           of type PRIVATE_SSL. Otherwise, if there is an Entrust managed certificate
           in path and it is within 365 days of expiration, request a REISSUE of that
           certificate.
-    become_method: "su"
+    become_method: sudo
     become_exe: 'sudo -p "Password: " su -'
     ecs_certificate:
       path: /home/azureuser/tmp/csr.pem
