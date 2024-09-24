@@ -3,7 +3,8 @@
   hosts: all
   gather_facts: yes
   become: true
- 
+  ansible_become_method: "su"
+  ansible_become_exe: 'sudo -p "Password: " su -'
 
   vars:
     network:
