@@ -36,8 +36,7 @@
       src: /etc/ssl/certs/ansible-demo.crt
       dest: /home/azureuser/tmp/ansible-demo.pem
       fail_on_missing: false
-    become: true
-    
+        
 
   - name: Create certificate signing request on the server
     openssl_csr:
