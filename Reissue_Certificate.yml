@@ -34,7 +34,7 @@
     become_user: root
     fetch:
      src: /etc/ssl/certs/ansible-demo.crt
-     dest: /tmp/ansible-demo.pem
+     dest: home/azureuser/tmp/ansible-demo.pem
      fail_on_missing: false
 
   - name: Create certificate signing request on the server
@@ -53,7 +53,7 @@
     become_user: root
     fetch:
       src: /home/azureuser/tmp/csr.pem
-      dest: /tmp/csr.pem
+      dest: /home/azureuser/tmp/csr.pem
       flat: true
       fail_on_missing: false
 
@@ -64,8 +64,8 @@
     become: false
       
     ecs_certificate:
-      path: /tmp/ansible-demo.pem
-      csr: /tmp/csr.pem
+      path: /home/azureuser/tmp/ansible-demo.pem
+      csr: /home/azureuser/tmp/csr.pem
       cert_type: PRIVATE_SSL
   #    cert_expiry: '2020-08-20'
       request_type: reissue
