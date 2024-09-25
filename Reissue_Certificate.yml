@@ -6,7 +6,7 @@
   
 
   vars:
-    User-Pass:
+    network:
       api_username: '{{ lookup("env", "ANSIBLE_NET_USERNAME") }}'
       api_password: '{{ lookup("env", "ANSIBLE_NET_PASSWORD") }}'
 
