@@ -1,4 +1,4 @@
 collections:
-  - name: community.crypto.openssl_privatekey
+  - name: community.crypto
     source: https://galaxy.ansible.com
      
