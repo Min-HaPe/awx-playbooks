@@ -36,8 +36,8 @@
       src: /etc/ssl/certs/ansible-demo.crt
       dest: home/azureuser/tmp/ansible-demo.pem
       fail_on_missing: false
-    become: true
-    become_user: root
+    become: false
+    
 
   - name: Create certificate signing request on the server
     openssl_csr:
@@ -57,9 +57,8 @@
       dest: /home/azureuser/tmp/csr.pem
       flat: true
       fail_on_missing: false
-    become: true
-    become_user: root
-    become_exe: sudo
+    become: false
+    
 
   - name: If there is no certificate present in path, request a new certificate
           of type PRIVATE_SSL. Otherwise, if there is an Entrust managed certificate
