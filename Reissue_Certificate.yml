@@ -52,7 +52,7 @@
     become_user: root
     fetch:
       src: /home/azureuser/tmp/csr.pem
-      dest: /home/azureuser/tmp/csr.pem
+      dest: /tmp/csr.pem
       flat: true
       fail_on_missing: false
 
@@ -63,8 +63,8 @@
     become: false
       
     ecs_certificate:
-      path: /home/azureuser/tmp/csr.pem
-      csr: /home/azureuser/tmp/csr.pem
+      path: /tmp/csr.pem
+      csr: /tmp/csr.pem
       cert_type: PRIVATE_SSL
   #    cert_expiry: '2020-08-20'
       request_type: reissue
