@@ -88,7 +88,7 @@
 
   - name: Copy certificate to Apache folder
     copy:
-     src: /home/weseroot/tmp/cert.pem
+     src: /tmp/ansible-demo.pem
      dest: /etc/ssl/certs/ansible-demo.crt
 
   - name: restart Ngninx
