@@ -30,15 +30,15 @@
       dest: /home/azureuser/ansibledemo_backups/cert.pem.{{ ansible_date_time.iso8601 }}
       remote_src: yes
 
-  - name: Copy the existing Cert to temporary file on localhost
-    fetch:
-     src: /etc/ssl/certs/ansible-demo.crt
-     dest: /tmp/cert.pem
-     fail_on_missing: false
+  #- name: Copy the existing Cert to temporary file on localhost
+   # fetch:
+    # src: /etc/ssl/certs/ansible-demo.crt
+     #dest: /tmp/cert.pem
+     #fail_on_missing: false
 
   - name: Create certificate signing request on the server
     openssl_csr:
-      path: /tmp/csr.pem
+      path: /home/azureuser/tmp/csr.pem
       privatekey_path: /etc/ssl/private/ansible-demo.key
  #     privatekey_passphrase: 'ansible'
       digest: sha256
