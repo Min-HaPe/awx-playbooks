@@ -34,15 +34,15 @@
   - name: Copy the existing Cert to temporary file on localhost
     fetch:
       src: /etc/ssl/certs/ansible-demo.crt
-      dest: /home/azureuser/ansible-demo.pem
+      dest: /home/azureuser/tmp/ansible-demo.pem
       fail_on_missing: false
     become: true
     
 
   - name: Create certificate signing request on the server
     openssl_csr:
-      path: /home/azureuser/csr.pem
-      privatekey_path: /home/azureuser/ansible-demo.key
+      path: /home/azureuser/tmp/csr.pem
+      privatekey_path: /home/azureuser/tmp/ansible-demo.key
  #     privatekey_passphrase: 'ansible'
       digest: sha256
       common_name: ansible-demo.wesentra.com
@@ -54,7 +54,7 @@
   - name: Copy the CSR to temporary file on localhost
     fetch:
       src: /home/azureuser/tmp/csr.pem
-      dest: /home/azureuser/csr.pem
+      dest: /home/azureuser/tmp/csr.pem
       flat: true
       fail_on_missing: false
     become: true
@@ -67,8 +67,8 @@
     become: false
       
     ecs_certificate:
-      path: /tmp/ansible-demo.pem
-      csr: /tmp/csr.pem
+      path: /home/azureuser/tmp/ansible-demo.pem
+      csr: /home/azureuser/tmp/csr.pem
       cert_type: PRIVATE_SSL
   #    cert_expiry: '2020-08-20'
       request_type: reissue
@@ -89,10 +89,10 @@
       dest: /etc/ssl/private/ansible-demo.key
       remote_src: yes
 
-  - name: Copy certificate to Apache folder
+  - name: Copy certificate to site certificate store
     copy:
-     src: /tmp/ansible-demo.pem
-     dest: /etc/ssl/certs/ansible-demo.crt
+      src: /home/ansibleuser/tmp/ansible-demo.pem
+      dest: /etc/ssl/certs/ansible-demo.crt
 
   - name: restart Ngninx
     service:
