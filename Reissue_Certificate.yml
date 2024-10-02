@@ -28,9 +28,9 @@
       state: absent
 
   - name: Check if certificate exists
-    local_action: stat path=/etc/ssl/certs/apache-demo.crt
-    register: cert
-    become_user: root
+    stat: 
+      path: /etc/ssl/certs/apache-demo.crt
+      register: cert
     remote_src: yes
 
   - name: Backup existing Certificate
