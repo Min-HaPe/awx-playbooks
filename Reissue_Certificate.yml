@@ -16,31 +16,31 @@
  
   - name: Create certificate private key on the server.
     openssl_privatekey:
-      path: /home/azureuser/tmp/ansible-demo.key
+      path: /etc/ssl/private/apache-demo.key
       type: RSA
       size: 2048
       
   - name: Delete existing CSR
     ansible.builtin.file:
-      path: /home/azureuser/tmp/csr.pem
+      path: /etc/ssl/csr/csr.pem
       state: absent
 
   - name: Backup existing Certificate
     copy:
-      src: /etc/ssl/certs/ansible-demo.crt
-      dest: /home/azureuser/ansibledemo_backups/cert.pem.{{ ansible_date_time.iso8601 }}
+      src: /etc/ssl/certs/apache-demo.crt
+      dest: /tmp/apache-demo.pem.{{ ansible_date_time.iso8601 }}
       remote_src: yes
 
-  - name: Copy the existing Cert to temporary file on localhost
-    fetch:
-      src: /etc/ssl/certs/ansible-demo.crt
-      dest: /home/azureuser/tmp/ansible-demo.pem
-      fail_on_missing: false
+  #- name: Copy the existing Cert to temporary file on localhost
+  #  fetch:
+   #   src: /etc/ssl/certs/ansible-demo.crt
+    #  dest: /home/azureuser/tmp/ansible-demo.pem
+     # fail_on_missing: false
         
 
   - name: Create certificate signing request on the server
     openssl_csr:
-      path: /home/azureuser/tmp/csr.pem
+      path: /etc/ssl/crs/csr.pem
       privatekey_path: /home/azureuser/tmp/ansible-demo.key
  #     privatekey_passphrase: 'ansible'
       digest: sha256
@@ -50,13 +50,13 @@
       country_name: FI
       state_or_province_name: Keski-Suomi
 
-  - name: Copy the CSR to temporary file on localhost
-    fetch:
-      src: /home/azureuser/tmp/csr.pem
-      dest: /home/azureuser/tmp/csr.pem
-      flat: true
-      fail_on_missing: false
-    become: true
+  #- name: Copy the CSR to temporary file on localhost
+   # fetch:
+    #  src: /home/azureuser/tmp/csr.pem
+     # dest: /home/azureuser/tmp/csr.pem
+      #flat: true
+      #fail_on_missing: false
+    #become: true
     
 
   - name: If there is no certificate present in path, request a new certificate
@@ -66,8 +66,8 @@
     become: false
       
     ecs_certificate:
-      path: /home/azureuser/tmp/ansible-demo.pem
-      csr: /home/azureuser/tmp/csr.pem
+      path: /etc/ssl/certs/ansible-demo.crt
+      csr: /etc/ssl/csr/csr.pem
       cert_type: PRIVATE_SSL
   #    cert_expiry: '2020-08-20'
       request_type: reissue
@@ -79,22 +79,21 @@
       entrust_api_key: '{{ api_pass }}'
       entrust_api_client_cert_path: '{{ lookup("env", "API_CLIENT_CERTIFICATE") }}'
       entrust_api_client_cert_key_path: '{{ lookup("env", "API_PRIVATE_KEY") }}'
-    delegate_to: localhost
-    
+       
 
-  - name: Copy private key to Private key folder
-    copy:
-      src: /home/azureuser/tmp/ansible-demo.key
-      dest: /etc/ssl/private/ansible-demo.key
-      remote_src: yes
+  #- name: Copy private key to Private key folder
+    #copy:
+     # src: /home/azureuser/tmp/ansible-demo.key
+      #dest: /etc/ssl/private/ansible-demo.key
+      #remote_src: yes
 
-  - name: Copy certificate to site certificate store
-    copy:
-      src: /home/ansibleuser/tmp/ansible-demo.pem
-      dest: /etc/ssl/certs/ansible-demo.crt
+# - name: Copy certificate to site certificate store
+ #   copy:
+  #    src: /home/ansibleuser/tmp/ansible-demo.pem
+   #   dest: /etc/ssl/certs/ansible-demo.crt
 
-  - name: restart Ngninx
+  - name: restart Apache
     service:
-      name: Ngninx
+      name: httpd
       state: restarted
 ...
