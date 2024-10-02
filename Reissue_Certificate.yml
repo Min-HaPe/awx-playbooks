@@ -27,9 +27,11 @@
       path: /etc/ssl/csr/csr.pem
       state: absent
 
-  - name: Backup existing Certificate if it exists
+  - name: Check if certificate exists
     stat: /etc/ssl/certs/apache-demo.crt
     register: st
+
+  - name: Backup existing Certificate
     copy:
       src: /etc/ssl/certs/apache-demo.crt
       dest: /tmp/apache-demo.pem.{{ ansible_date_time.iso8601 }}
