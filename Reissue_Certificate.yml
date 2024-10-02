@@ -29,8 +29,7 @@
 
   - name: Check if certificate exists
     stat: 
-      path: 
-        dest: /etc/ssl/certs/apache-demo.crt
+      path: "/etc/ssl/certs/apache-demo.crt"
       register: cert
    
 
