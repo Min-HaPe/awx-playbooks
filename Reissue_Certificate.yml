@@ -21,7 +21,7 @@
       type: RSA
       size: 2048
     become_user: root
-      
+
   - name: Delete existing CSR
     ansible.builtin.file:
       path: /etc/ssl/csr/csr.pem
@@ -32,6 +32,7 @@
       src: /etc/ssl/certs/apache-demo.crt
       dest: /tmp/apache-demo.pem.{{ ansible_date_time.iso8601 }}
       remote_src: yes
+      fail_on_missing: false
 
   #- name: Copy the existing Cert to temporary file on localhost
   #  fetch:
