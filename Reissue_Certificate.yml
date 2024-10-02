@@ -12,8 +12,10 @@
       api_username: '{{ lookup("env", "ANSIBLE_NET_USERNAME") }}'
       api_password: '{{ lookup("env", "ANSIBLE_NET_PASSWORD") }}'
 
+      api_cert: '{{ lookup("env", "PUBLIC_CERT") }}'
+      private_key: '{{ lookup("env", "PRIVATE_KEY") }}'
+
       
-    
   tasks:
  
   - name: Create certificate private key on the server.
