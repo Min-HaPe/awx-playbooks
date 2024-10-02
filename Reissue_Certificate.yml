@@ -30,7 +30,7 @@
   - name: Check if certificate exists
     stat: 
       path: "/etc/ssl/certs/apache-demo.crt"
-      register: cert
+    register: cert
    
 
   - name: Backup existing Certificate
