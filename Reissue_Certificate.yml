@@ -31,7 +31,7 @@
     stat: 
       path: /etc/ssl/certs/apache-demo.crt
       register: cert
-    remote_src: yes
+   
 
   - name: Backup existing Certificate
     copy:
