@@ -51,7 +51,7 @@
   - name: Create certificate signing request on the server
     openssl_csr:
       path: /etc/ssl/csr/csr.pem
-      privatekey_path: /etc/ssl/private/ansible-demo.key
+      privatekey_path: /etc/ssl/private/apache-demo.key
  #     privatekey_passphrase: 'ansible'
       digest: sha256
       common_name: ansible-demo.wesentra.com
