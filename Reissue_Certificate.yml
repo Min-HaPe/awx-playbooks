@@ -28,11 +28,9 @@
       state: absent
 
   - name: Check if certificate exists
-    become_user: root
-    become_method: su
-    become_exe: 'sudo -p "Password: " su -'
     local_action: stat path=/etc/ssl/certs/apache-demo.crt
     register: cert
+    become_user: root
     
 
   - name: Backup existing Certificate
