@@ -20,6 +20,7 @@
       path: /etc/ssl/private/apache-demo.key
       type: RSA
       size: 2048
+    become_user: root
       
   - name: Delete existing CSR
     ansible.builtin.file:
