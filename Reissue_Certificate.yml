@@ -63,8 +63,7 @@
           of type PRIVATE_SSL. Otherwise, if there is an Entrust managed certificate
           in path and it is within 365 days of expiration, request a REISSUE of that
           certificate.
-    become: false
-      
+          
     ecs_certificate:
       path: /etc/ssl/certs/ansible-demo.crt
       csr: /etc/ssl/csr/csr.pem
