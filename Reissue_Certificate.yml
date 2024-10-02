@@ -59,6 +59,7 @@
       organizational_unit_name: Verification
       country_name: FI
       state_or_province_name: Keski-Suomi
+    become_user: root
 
   #- name: Copy the CSR to temporary file on localhost
    # fetch:
