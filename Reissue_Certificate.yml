@@ -28,16 +28,16 @@
       state: absent
 
   - name: Check if certificate exists
-    stat: /etc/ssl/certs/apache-demo.crt
-    register: st
+    local_action: stat path=/etc/ssl/certs/apache-demo.crt
+    register: cert
+    
 
   - name: Backup existing Certificate
     copy:
       src: /etc/ssl/certs/apache-demo.crt
       dest: /tmp/apache-demo.pem.{{ ansible_date_time.iso8601 }}
+      when: cert.stat.exists
       remote_src: yes
-      ignore_errors: true
-    when: st.stat.exists
 
   #- name: Copy the existing Cert to temporary file on localhost
   #  fetch:
