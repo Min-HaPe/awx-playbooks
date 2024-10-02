@@ -29,6 +29,7 @@
 
   - name: Check if certificate exists
     become_user: root
+    become_method: sudo
     local_action: stat path=/etc/ssl/certs/apache-demo.crt
     register: cert
     
