@@ -68,7 +68,7 @@
     ecs_certificate:
       path: /etc/ssl/certs/ansible-demo.crt
       csr: /etc/ssl/csr/csr.pem
-      cert_type: PRIVATE_SSL
+      cert_type: STANDARD_SSL
   #    cert_expiry: '2020-08-20'
       request_type: reissue
       remaining_days: 365
