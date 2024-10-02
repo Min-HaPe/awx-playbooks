@@ -27,7 +27,7 @@
     ansible.builtin.file:
       path: /etc/ssl/csr/csr.pem
       state: absent
-    become_user: roots
+    become_user: root
 
   - name: Check if certificate exists
     stat: 
