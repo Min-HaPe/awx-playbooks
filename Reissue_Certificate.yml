@@ -12,6 +12,7 @@
       api_username: '{{ lookup("env", "ANSIBLE_NET_USERNAME") }}'
       api_password: '{{ lookup("env", "ANSIBLE_NET_PASSWORD") }}'
 
+      
     
   tasks:
  
@@ -76,7 +77,7 @@
           certificate.
           
     ecs_certificate:
-      path: /etc/ssl/certs/ansible-demo.crt
+      path: /etc/ssl/certs/apache-demo.crt
       csr: /etc/ssl/csr/csr.pem
       cert_type: STANDARD_SSL
   #    cert_expiry: '2020-08-20'
@@ -87,8 +88,8 @@
       requester_phone: 555-555-5555
       entrust_api_user: '{{ api_user }}'
       entrust_api_key: '{{ api_pass }}'
-      entrust_api_client_cert_path: '{{ lookup("env", "API_CLIENT_CERTIFICATE") }}'
-      entrust_api_client_cert_key_path: '{{ lookup("env", "API_PRIVATE_KEY") }}'
+      entrust_api_client_cert_path: '{{ public_cert }}'
+      entrust_api_client_cert_key_path: '{{ private_key }}'
        
 
   #- name: Copy private key to Private key folder
