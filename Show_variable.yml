@@ -1,7 +1,7 @@
 ---
 - name: Print Enviromental variables 
   hosts: all
-  
+  become_user: root
   msg:
   - "api_cert: {{ lookup('env', 'PUBLIC_CERT') }}"
   - "private_key: {{ lookup('env', 'PRIVATE_KEY') }}"
