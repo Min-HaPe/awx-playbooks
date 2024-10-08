@@ -6,6 +6,6 @@
   tasks:
    - debug:
       msg:
-      - "api_cert: {{ lookup('env', 'PUBLIC_CERT') }}"
-      - "private_key: {{ lookup('env', 'PRIVATE_KEY') }}"
+      - "api_cert: {{ lookup('env', 'API_CLIENT_CERTIFICATE') }}"
+      - "private_key: {{ lookup('env', 'API_PRIVATE_KEY') }}"
   delegate_to: localhost   
