@@ -1,0 +1,7 @@
+---
+
+- name: Print Enviromental variables 
+  msg:
+  - "api_cert: {{ lookup('env', 'PUBLIC_CERT') }}"
+  - "private_key: {{ lookup('env', 'PRIVATE_KEY') }}"
+  
