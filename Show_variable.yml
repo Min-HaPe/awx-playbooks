@@ -1,6 +1,6 @@
 ---
 - name: Print Enviromental variables 
-  hosts: localhost 
+  hosts: all
   become_user: root
 
   vars:
