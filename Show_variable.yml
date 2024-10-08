@@ -8,10 +8,11 @@
     key: ".key"
 
   tasks:
-   - debug:
-      msg:
-       - "api_cert: {{ lookup('env', 'API_CLIENT_CERTIFICATE') }}{{ pem }}"
-       - "private_key: {{ lookup('env', 'API_PRIVATE_KEY') }}{{ key }}"
-       - "{{ out.stdout }}"
+   - command:
+      cmd: cat "{{ lookup('env', 'API_CLIENT_CERTIFICATE') }}{{ pem }}"
+     register: out 
+
+   - debug: 
+      msg: "{{ out.stdout }}"
 
   
