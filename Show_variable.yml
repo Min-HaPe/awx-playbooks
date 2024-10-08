@@ -10,8 +10,8 @@
   tasks:
    - debug:
       msg:
-        "api_cert: {{ lookup('env', 'API_CLIENT_CERTIFICATE') }}{{ pem }}"
-        "private_key: {{ lookup('env', 'API_PRIVATE_KEY') }}{{ key }}"
-        "{{ out.stdout }}"
+       - "api_cert: {{ lookup('env', 'API_CLIENT_CERTIFICATE') }}{{ pem }}"
+       - "private_key: {{ lookup('env', 'API_PRIVATE_KEY') }}{{ key }}"
+       - "{{ out.stdout }}"
 
   
