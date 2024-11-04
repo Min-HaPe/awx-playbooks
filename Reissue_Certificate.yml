@@ -18,7 +18,7 @@
       path: /tmp/cert_request
       state: directory
       register: local_dir
-    delegate_to: localhost
+    delegate_to: Localhost
    
  
   - name: Create certificate private key for the host server.
