@@ -15,7 +15,7 @@
       mode: '0755'
     register: local_dir
     delegate_to: localhost
-    become: true
+    become_method: sudo
     become_user: root
 
   - name: Create certificate private key for the host server.
@@ -75,8 +75,8 @@
       requester_name: Harry Ansible
       requester_email: harry@wesentra.com
       requester_phone: 555-555-5555
-      entrust_api_user:  "{{ lookup('env', 'ANSIBLE_NET_USERNAME') }}"
-      entrust_api_key: "{{ lookup('env', 'ANSIBLE_NET_PASSWORD') }}"
+      entrust_api_user:  "{{ lookup('env', 'api_user') }}"
+      entrust_api_key: "{{ lookup('env', 'api_pass') }}"
       entrust_api_client_cert_path: /home/azureuser/ecsapi.pem
       entrust_api_client_cert_key_path: /home/azureuser/api-key.key
        
