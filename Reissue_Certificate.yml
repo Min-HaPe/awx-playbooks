@@ -10,7 +10,8 @@
    
   - name: Create certificate request directory
     hosts: localhost
-    ansible.builtin.file:
+    tasks:
+      ansible.builtin.file:
       path: /tmp/cert_request
       state: directory
     register: local_dir
