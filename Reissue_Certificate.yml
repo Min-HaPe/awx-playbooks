@@ -9,7 +9,8 @@
   tasks:
    
   - name: Create certificate request directory
-    ansible.builtin.file:
+    local_action:
+      module: file
       path: /tmp/cert_request
       state: directory
       register: local_dir
