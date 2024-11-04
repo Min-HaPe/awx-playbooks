@@ -9,15 +9,17 @@
   tasks:
    
   - name: Create certificate request directory
+    become: true
+    become_user: root
+    become_method: sudo
+    
     local_action:
       module: file
       path: /tmp/cert_request
       state: directory
       register: local_dir
     delegate_to: localhost
-    become: true
-    become_user: azureuser
-    become_method: sudo
+   
  
   - name: Create certificate private key for the host server.
     openssl_privatekey:
