@@ -9,13 +9,12 @@
   tasks:
    
   - name: Create certificate request directory
-    hosts: localhost
-    tasks:
-      ansible.builtin.file:
+    ansible.builtin.file:
       path: /tmp/cert_request
       state: directory
-    register: local_dir
-    
+      register: local_dir
+    delegate_to: localhost
+    become: true
  
   - name: Create certificate private key for the host server.
     openssl_privatekey:
@@ -23,7 +22,7 @@
       type: RSA
       size: 2048
     delegate_to: localhost
-    become: true
+    
 
   - name: Check if certificate exists
     stat: 
