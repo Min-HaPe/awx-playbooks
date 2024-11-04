@@ -16,7 +16,8 @@
     register: local_dir
     delegate_to: localhost
     become_method: sudo
-    become_user: root
+    become_user: azureuser
+    become_pass: "{{ lookup('env', 'Username') }}"
 
   - name: Create certificate private key for the host server.
     openssl_privatekey:
