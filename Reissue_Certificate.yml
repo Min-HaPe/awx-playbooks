@@ -21,7 +21,7 @@
       type: RSA
       size: 2048
     delegate_to: localhost
-    become_user: root
+    become: true
 
   - name: Check if certificate exists
     stat: 
