@@ -16,6 +16,7 @@
       register: local_dir
     delegate_to: localhost
     become: true
+    become_user: root
  
   - name: Create certificate private key for the host server.
     openssl_privatekey:
