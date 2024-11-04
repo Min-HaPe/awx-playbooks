@@ -15,9 +15,10 @@
       mode: '0755'
     register: local_dir
     delegate_to: localhost
+    become: true
     become_method: sudo
-    become_user: azureuser
-    become_password: "{{ lookup('env', 'Username') }}"
+    become_user: root
+    
 
   - name: Create certificate private key for the host server.
     openssl_privatekey:
