@@ -13,6 +13,8 @@
       path: /tmp/cert_request/apache-demo.key
       type: RSA
       size: 2048
+    become: true
+    become_user: root
     delegate_to: localhost
     
 
@@ -43,7 +45,7 @@
       privatekey_path: /tmp/cert_request/apache-demo.key
  #     privatekey_passphrase: 'ansible'
       digest: sha256
-      common_name: ansible-demo.wesentra.com
+      common_name: apache-demo.wesentra.com
       organization_name: Wesentra Oy
       organizational_unit_name: Verification
       country_name: FI
