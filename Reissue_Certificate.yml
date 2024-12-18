@@ -4,10 +4,9 @@
   gather_facts: yes
   become: true
   become_method: sudo
-  
-    
+
   tasks:
-    
+
   - name: Create certificate private key for the host server.
     openssl_privatekey:
       path: /tmp/cert_request/apache-demo.key
@@ -16,34 +15,31 @@
     become: true
     become_user: root
     delegate_to: localhost
-    
 
   - name: Check if certificate exists
-    stat: 
+    stat:
       path: "/etc/ssl/certs/apache-demo.crt"
     register: cert
-   
+
   - name: Backup existing Certificate
     copy:
       src: /etc/ssl/certs/apache-demo.crt
       dest: /tmp/apache-demo.pem.{{ ansible_date_time.iso8601 }}
       remote_src: yes
     when: cert.stat.exists
-    
 
   - name: Fetch the file with elevated privileges
     fetch:
-        src: /etc/ssl/certs/apache-demo.crt
-        dest: /tmp/cert_request
-        flat: yes
+      src: /etc/ssl/certs/apache-demo.crt
+      dest: /tmp/cert_request
+      flat: yes
     become: true
     become_user: root
-        
+
   - name: Create certificate signing request on the server
     openssl_csr:
       path: /tmp/cert_request/csr.pem
       privatekey_path: /tmp/cert_request/apache-demo.key
- #     privatekey_passphrase: 'ansible'
       digest: sha256
       common_name: apache-demo.wesentra.com
       organization_name: Wesentra Oy
@@ -54,31 +50,24 @@
     delegate_to: localhost
 
   - name: If there is no certificate present in path, request a new certificate
-          of type PRIVATE_SSL. Otherwise, if there is an Entrust managed certificate
+          of type STANDARD_SSL. Otherwise, if there is an Entrust managed certificate
           in path and it is within 365 days of expiration, request a REISSUE of that
           certificate.
-          
     ecs_certificate:
       path: /tmp/cert_request/apache-demo.crt
-      csr: /e/tmp/cert_request/csr.pem
+      csr: /tmp/cert_request/csr.pem
       cert_type: STANDARD_SSL
-  #    cert_expiry: '2020-08-20'
       request_type: reissue
       remaining_days: 365
       requester_name: Harry Ansible
       requester_email: harry@wesentra.com
       requester_phone: 555-555-5555
-      entrust_api_user:  "{{ lookup('env', 'api_user') }}"
+      entrust_api_user: "{{ lookup('env', 'api_user') }}"
       entrust_api_key: "{{ lookup('env', 'api_pass') }}"
       entrust_api_client_cert_path: /home/azureuser/ecsapi.pem
       entrust_api_client_cert_key_path: /home/azureuser/api-key.key
-       
 
   - name: Delete request folder
     file:
       path: /tmp/cert_request
       state: absent
-
-...
-
-

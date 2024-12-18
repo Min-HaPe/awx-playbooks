@@ -1,0 +1,24 @@
+---
+- name: Delete certificate issuance files on localhost
+  hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+
+  - name: Copy private key to Private key folder
+    copy:
+      src: /tmp/cert_request/ansible-demo.key
+      dest: /etc/ssl/private/ansible-demo.key
+      remote_src: yes
+
+  - name: Copy certificate to site certificate store
+    copy:
+      src: /tmp/cert_request/ansible-demo.pem
+      dest: /etc/ssl/certs/ansible-demo.crt
+    remote_src: yes
+    
+  - name: restart Apache
+    service:
+      name: httpd
+      state: restarted

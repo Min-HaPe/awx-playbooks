@@ -1,0 +1,17 @@
+---
+- name: Check and save certificate expiry date
+  hosts: all
+  tasks:
+    - name: Get the certificate from the host
+      community.crypto.get_certificate:
+        host: "apache"
+        port: 443
+      register: cert_info
+
+    - name: Save the certificate expiry date as a fact
+      set_fact:
+        cert_expiry_date: "{{ cert_info.not_after }}"
+
+    - name: Display the saved expiry date
+      ansible.builtin.debug:
+        msg: "The certificate expires on {{ cert_expiry_date }}"

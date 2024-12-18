@@ -1,0 +1,12 @@
+---
+- name: Create folder for certificate issuance files. 
+  hosts: localhost
+  connection: local
+  become: true
+
+  tasks: 
+  - name: Create a Certificate request folder in /tmp on the local machine
+    file:
+        path: /tmp/cert_request
+        state: directory
+        mode: '0755'
