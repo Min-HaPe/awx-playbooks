@@ -1,3 +1,4 @@
+
 - name: Check and save certificate expiry date
   hosts: all
   tasks:
@@ -5,6 +6,7 @@
       community.crypto.get_certificate:
         host: "{{ inventory_hostname }}"
         port: 443
+        asn1_base64: false  # Explicitly set the value to avoid deprecation warning
       register: cert_info
 
     - name: Save the certificate expiry date as a fact
