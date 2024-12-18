@@ -1,10 +1,9 @@
----
 - name: Check and save certificate expiry date
   hosts: all
   tasks:
     - name: Get the certificate from the host
       community.crypto.get_certificate:
-        host: "apache"
+        host: "{{ inventory_hostname }}"
         port: 443
       register: cert_info
 
