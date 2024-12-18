@@ -4,7 +4,7 @@
   tasks:
     - name: Get the certificate from the host
       community.crypto.get_certificate:
-        host: "https://apache-demo.wesentra.com"
+        host: "apache-demo.wesentra.com"
         port: 443
         asn1_base64: false  # Explicitly set the value to avoid deprecation warning
       delegate_to: localhost
