@@ -4,6 +4,16 @@
     - name: Ping the host to ensure it is online
       ansible.builtin.ping:
 
+    - name: Check if certificate file exists on the server
+      ansible.builtin.stat:
+        path: "/etc/ssl/certs/apache-demo.crt"
+      register: cert_stat
+
+    - name: Fail if certificate does not exist
+      ansible.builtin.fail:
+        msg: "Certificate does not exist on the server."
+      when: not cert_stat.stat.exists
+
     - name: Get the certificate from the host
       community.crypto.get_certificate:
         host: "apache-demo.wesentra.com"
