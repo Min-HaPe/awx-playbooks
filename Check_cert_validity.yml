@@ -8,7 +8,12 @@
         asn1_base64: false  # Explicitly set the value to avoid deprecation warning
       delegate_to: localhost
       register: cert_info
-      failed_when: cert_info is not defined or cert_info.not_after is not defined
+      ignore_errors: yes
+
+    - name: Check if certificate retrieval was successful
+      ansible.builtin.fail:
+        msg: "Failed to get certificate from apache-demo.wesentra.com:443"
+      when: cert_info is not defined or cert_info.not_after is not defined
 
     - name: Save the certificate expiry date as a fact
       set_fact:
@@ -19,8 +24,3 @@
       ansible.builtin.debug:
         msg: "The certificate expires on {{ cert_expiry_date }}"
       when: cert_info is defined and cert_info.not_after is defined
-
-    - name: Certificate does not exist
-      ansible.builtin.debug:
-        msg: "The certificate does not exist or could not be retrieved."
-      when: cert_info is not defined or cert_info.not_after is not defined
