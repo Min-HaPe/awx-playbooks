@@ -12,8 +12,6 @@
       path: /tmp/cert_request/apache-demo.key
       type: RSA
       size: 2048
-    become: true
-    become_user: azureuser
     delegate_to: localhost
 
   - name: Check if certificate exists
