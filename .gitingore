@@ -2,3 +2,4 @@
 *scripts/
 *.cfg
 *incude/
+*.vscode/
