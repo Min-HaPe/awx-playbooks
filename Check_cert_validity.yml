@@ -1,5 +1,7 @@
+---
 - name: Check and save certificate expiry date
   hosts: all
+  become: yes
   tasks:
     - name: Ping the host to ensure it is online
       ansible.builtin.ping:
@@ -9,9 +11,9 @@
         path: "/etc/ssl/certs/apache-demo.crt"
       register: cert_stat
 
-    - name: Fail if certificate does not exist
-      ansible.builtin.fail:
-        msg: "Certificate does not exist on the server."
+    - name: Set message if certificate does not exist
+      set_fact:
+        cert_message: "Certificate does not exist on the server."
       when: not cert_stat.stat.exists
 
     - name: Get the certificate from the host
@@ -24,8 +26,8 @@
       ignore_errors: yes
 
     - name: Check if certificate retrieval was successful
-      ansible.builtin.fail:
-        msg: "Failed to get certificate from apache-demo.wesentra.com:443"
+      set_fact:
+        cert_message: "Failed to get certificate from apache-demo.wesentra.com:443"
       when: cert_info is not defined or cert_info.not_after is not defined
 
     - name: Save the certificate expiry date as a fact
@@ -38,7 +40,7 @@
         msg: "The certificate expires on {{ cert_expiry_date }}"
       when: cert_info is defined and cert_info.not_after is defined
 
-    - name: Certificate does not exist or could not be retrieved
+    - name: Display the certificate message
       ansible.builtin.debug:
-        msg: "The certificate does not exist or could not be retrieved."
-      when: cert_info is not defined or cert_info.not_after is not defined
+        msg: "{{ cert_message }}"
+      when: cert_message is defined
