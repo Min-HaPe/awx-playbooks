@@ -10,10 +10,15 @@
       ansible.builtin.stat:
         path: "/etc/ssl/certs/apache-demo.crt"
       register: cert_stat
-
+    
     - name: Set message if certificate does not exist
       set_fact:
         cert_message: "Certificate does not exist on the server."
+      when: not cert_stat.stat.exists
+
+    - name: Fail if certificate does not exist
+      ansible.builtin.fail:
+        msg: "Certificate does not exist on the server."
       when: not cert_stat.stat.exists
 
     - name: Get the certificate from the host
@@ -26,8 +31,8 @@
       ignore_errors: yes
 
     - name: Check if certificate retrieval was successful
-      set_fact:
-        cert_message: "Failed to get certificate from apache-demo.wesentra.com:443"
+      ansible.builtin.fail:
+        msg: "Failed to get certificate from apache-demo.wesentra.com:443"
       when: cert_info is not defined or cert_info.not_after is not defined
 
     - name: Save the certificate expiry date as a fact
@@ -39,8 +44,3 @@
       ansible.builtin.debug:
         msg: "The certificate expires on {{ cert_expiry_date }}"
       when: cert_info is defined and cert_info.not_after is defined
-
-    - name: Display the certificate message
-      ansible.builtin.debug:
-        msg: "{{ cert_message }}"
-      when: cert_message is defined
