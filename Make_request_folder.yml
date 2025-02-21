@@ -10,3 +10,16 @@
         path: /tmp/cert_request
         state: directory
         mode: '0755'
+        owner: azureuser
+        group: azureuser
+        recurse: yes
+    register: command_result
+    ignore_errors: yes
+
+  - name: Set failure message as a fact if the command fails
+    set_fact:
+      fail_message: "{{ command_result.stderr if command_result.failed else 'Command succeeded' }}"
+
+  - name: Debug the fail message
+    debug:
+      msg: "{{ fail_message }}"
