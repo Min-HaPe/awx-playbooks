@@ -1,15 +1,18 @@
 ---
 - name: Update and upgrade apt packages
   hosts: all
-  gather_facts: yes
-  become: true
-  become_method: sudo
-  
+  become: yes
+ 
   tasks:
-    - name: Update apt package index
+    - name: Update package cache
       apt:
         update_cache: yes
 
-    - name: Upgrade all apt packages
+    - name: Upgrade packages
       apt:
         upgrade: dist
+
+    - name: Remove unused packages
+      apt:
+        autoremove: yes
+        purge: yes
