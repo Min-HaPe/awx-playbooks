@@ -13,7 +13,7 @@
       type: RSA
       size: 2048
     become: true
-    become_user: root
+    become_user: azureuser
     delegate_to: localhost
 
   - name: Check if certificate exists
@@ -34,7 +34,7 @@
       dest: /tmp/cert_request
       flat: yes
     become: true
-    become_user: root
+    become_user: azureuser
 
   - name: Create certificate signing request on the server
     openssl_csr:
@@ -46,7 +46,7 @@
       organizational_unit_name: Verification
       country_name: FI
       state_or_province_name: Keski-Suomi
-    become_user: root
+    become_user: azureuser
     delegate_to: localhost
 
   - name: If there is no certificate present in path, request a new certificate
